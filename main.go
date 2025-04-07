@@ -9,8 +9,6 @@ import (
 
 func main() {
 
-	initialiseCommandRegistry()
-
 	prompt := "Pokedex > "
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -55,32 +53,20 @@ type cliCommand struct {
 	callback    func() error
 }
 
-var commands = map[string]cliCommand{
-	"exit": {
-		name:        "exit",
-		description: "Exit the Pokedex",
-		callback:    nil,
-	},
-	"help": {
-		name:        "help",
-		description: "Displays a help message",
-		callback:    nil,
-	},
-}
+var commands map[string]cliCommand
 
-var commandCallbacks = map[string]func() error{
-	"exit": commandExit,
-	"help": commandHelp,
-}
-
-func initialiseCommandRegistry() {
-	for n, cmd := range commands {
-		wCallback := cliCommand{
-			name:        cmd.name,
-			description: cmd.description,
-			callback:    commandCallbacks[n],
-		}
-		commands[n] = wCallback
+func init() {
+	commands = map[string]cliCommand{
+		"exit": {
+			name:        "exit",
+			description: "Exit the Pokedex",
+			callback:    commandExit,
+		},
+		"help": {
+			name:        "help",
+			description: "Displays a help message",
+			callback:    commandHelp,
+		},
 	}
 }
 
