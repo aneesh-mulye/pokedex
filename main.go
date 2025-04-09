@@ -101,6 +101,11 @@ func init() {
 			description: "inspect a pokemon in your pokedex",
 			callback:    commandInspect,
 		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "list all the pokemon in your pokedex",
+			callback:    commandPokedex,
+		},
 	}
 }
 
@@ -202,6 +207,7 @@ func commandCatch(args []string) error {
 
 	pokedex[pokemonName] = pokemon
 	fmt.Println(pokemonName + " was caught!")
+	fmt.Println("You may now inspect it with the inspect command.")
 
 	return nil
 }
@@ -231,6 +237,20 @@ func commandInspect(args []string) error {
 	fmt.Println("Types:")
 	for _, t := range p.Types {
 		fmt.Println("  - " + t.Type.Name)
+	}
+
+	return nil
+}
+
+func commandPokedex(args []string) error {
+	if len(pokedex) == 0 {
+		fmt.Println("Your Pokedex is empty. You have not caught any Pokemon.")
+		return nil
+	}
+
+	fmt.Println("Your Pokedex:")
+	for pokemonName := range pokedex {
+		fmt.Println(" - " + pokemonName)
 	}
 
 	return nil
